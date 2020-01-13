@@ -1,0 +1,42 @@
+Requirements
+------------------------------------------------------
+git
+python
+
+
+Misc
+------------------------------------------------------
+cm help
+    show help
+
+cm version
+
+cm init
+
+
+Definitions
+------------------------------------------------------
+If I write about * I mean.
+
+    - configuration
+
+
+
+Profile
+------------------------------------------------------
+
+A profile defines which configuration your are currently using.
+It is associated with a version of your dotfiles.
+
+
+cm profile
+    - list: show all available profiles
+    - get: prints current profile
+    - set: takes [string] and sets the profile
+    - create: creates a profile
+
+cm status
+cm add
+cm commit
+cm push
+    pushes the currently commited files
