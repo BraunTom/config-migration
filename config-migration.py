@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
 from __future__ import print_function
-from os import path
+from os import path, listdir 
+import shutil
 import subprocess
 import sys
 
@@ -21,7 +22,9 @@ def are_all_args_read():
 
 # Todo: wait for finish
 def execute(cmdString):
-    subprocess.Popen(cmdString.split())
+    print(cmdString)
+    child = subprocess.Popen(cmdString.split())
+    child.communicate()
 
 def git_bare(git_cmd):
     # git command without any predefined parameters
@@ -71,10 +74,11 @@ def init():
 
 # Todo: replace rsync and rm by python functionality
 def load(repoURL):
-    git('clone --separate-git-dir=$HOME/.dotfiles {} ~/tmpdotfiles'.format(repoURL))
-    execute('rsync --recursive --verbose --exclude ".git" ~/tmpdotfiles ~')
-    execute('rm -r ~/tmpdotfiles')
-
+    tmp_path = user_path + '/tmpdotfiles'
+    git_bare('clone --separate-git-dir={} {} {}'.format(config_path, repoURL, tmp_path))
+    for file in filter(lambda file: file != '.git', listdir('{}'.format(tmp_path))):
+        shutil.move(tmp_path + '/' + file, user_path + '/' + file)
+    shutil.rmtree(tmp_path)
 
 register_command('add', lambda: git('add'))
 register_command('commit', lambda: git('commit -a -m ' + prompt('Please enter a commit message:\n')))
